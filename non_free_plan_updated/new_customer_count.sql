@@ -9,9 +9,9 @@ with customer_info as (
 	       EXTRACT(YEAR FROM cast(date(to_timestamp(cast(pili."period" ->> 'start' as int))) as date)) "year",
 	       EXTRACT(MONTH FROM cast(date(to_timestamp(cast(pili."period" ->> 'start' as int))) as date)) "month",
 	       row_number() over (partition by i.customer order by date(to_timestamp(cast(pili."period" ->> 'start' as int)))) as rn
-	from public.invoices as i
-	inner join public.invoice_line_items as pili on i.id = pili.invoice_id
-	inner join public.products as pp on (pili."price" ->> 'product') = pp.id
+	from invoices as i
+	inner join invoice_line_items as pili on i.id = pili.invoice_id
+	inner join products as pp on (pili."price" ->> 'product') = pp.id
 	where i.status = 'paid'
 	and i.subtotal > 0
 )

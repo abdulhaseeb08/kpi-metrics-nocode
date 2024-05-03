@@ -11,9 +11,9 @@ with payment_failed_customers as(
 	from subscriptions as s
 	inner join invoices as i on i.id = s.latest_invoice 
 	inner join invoice_line_items ili on ili.invoice_id = i.id 
-	   JOIN   PUBLIC.products p
+	   JOIN   products p
 	   ON     (ili."price" ->> 'product') = p.id
-	   join public.prices pr
+	   join prices pr
 	  on p.id = pr.product
 	where s.id in (
 	select id from subscriptions 

@@ -10,13 +10,11 @@ with payment_failed_customers as(
 		   EXTRACT(MONTH FROM cast(to_timestamp(cast(ili."period" ->> 'start' as int)) as date)) "month",
 		   EXTRACT(YEAR FROM cast(to_timestamp(cast(ili."period" ->> 'start' as int)) as date)) "year"
 	from subscriptions as s
-	inner join subscriptions_cancellation_details as scd 
-	on s."_airbyte_subscriptions_hashid" = scd."_airbyte_subscriptions_hashid" 
 	inner join invoices as i on i.id = s.latest_invoice 
 	inner join invoice_line_items ili on ili.invoice_id = i.id
-	   JOIN   PUBLIC.products p
+	   JOIN   products p
 	   ON     (ili."price" ->> 'product') = p.id
-	   join public.prices pr
+	   join prices pr
 	  on p.id = pr.product
 	LEFT JOIN LATERAL (
 	    SELECT 
